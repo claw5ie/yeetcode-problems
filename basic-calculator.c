@@ -1,17 +1,3 @@
-int
-apply (char ch, int left, int right)
-{
-  switch (ch)
-    {
-    case '+':
-      return left + right;
-    case '-':
-      return left - right;
-    }
-
-  return -1;
-}
-
 const char *s;
 
 int
@@ -46,8 +32,17 @@ parse_expr (bool parse_same_prec)
     {
       while (*s == '+' || *s == '-')
         {
-          char op = *s++;
-          left = apply (op, left, parse_expr (false));
+          int op = *s++, right = parse_expr (false);
+
+          switch (op)
+            {
+            case '+':
+              left += right;
+              break;
+            case '-':
+              left -= right;
+              break;
+            }
         }
     }
 
