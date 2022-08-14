@@ -81,12 +81,11 @@ parse_expr (int lower_prec)
 
   tok = next_token (&s);
 
-  int prev_prec = INT_MAX;
-  int curr_prec = prec_of (tok.type);
+  int prev_prec = INT_MAX, curr_prec = prec_of (tok.type);
 
   while (curr_prec >= lower_prec && curr_prec < prev_prec)
     {
-      while (curr_prec == prec_of (tok.type))
+      do
         {
           int right = parse_expr (curr_prec + 1);
 
@@ -108,6 +107,7 @@ parse_expr (int lower_prec)
 
           tok = next_token (&s);
         }
+      while (curr_prec == prec_of (tok.type));
 
       prev_prec = curr_prec;
       curr_prec = prec_of (tok.type);
